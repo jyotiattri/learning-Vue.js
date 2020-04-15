@@ -12,51 +12,8 @@
   <div class="nav-bar"></div>
 
 <div id="app">
-  <div class="product">
-
-    <div class="product-image">
-      <img v-bind:src="image" v-bind:alt="altText"/>
-    </div>
-
-    <div class="product-info">
-      <h1>{{ title }}</h1>
-      <a :href="link" target="blank">More products like this</a>y
-      <p v-if="inStock">In Stock</p>
-      <p v-else>Out of Stock</p>
-      <p>{{ sale }}</p>
-
-      <ul>
-        <li v-for="detail in details">{{ detail }}</li>
-      </ul>
-
-      <div class="color-box"
-      v-for="(varient, index) in varients" :key="varient.varientId"
-      :style="{backgroundColor: varient.varientColor }"
-         @mouseover="updateProduct(index)">
-      </div>
-
-      <button v-on:click="addToCart" 
-      :disabled= "!inStock"
-      :class="{ disabledButton: !inStock }">Add to cart</button>
-      <button v-on:click="deleteFromCart">Delete</button>
-<div class="cart">
-  <p>Cart({{ cart }})</p>
-</div>
-
-<br/>
-<!-- table of 1o -->
-<p>Table of different numbers</p>
-<input type="number" v-model="num"/>
-<ul>
-  <li v-for= "a in 10">{{ num }}*{{a}}= {{num*a}}</li>
-</ul>
-
-
-
-    </div>
-
-  </div>
-  
+  <product :premium="premium"></product>
+  <product></product>  
 </div>
 
 </body>

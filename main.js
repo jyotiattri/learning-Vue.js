@@ -1,60 +1,120 @@
-var app = new Vue({
-    el: '#app',
-    data: {
-      brand: 'Vue Mastery',
-      product: 'Socks',
-      altText: 'A pair of Socks',
-      selectedVariant: 0,
-      link: 'https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding',
-     details: ["80% Ployster", "20% Cotton", "Gender Neutral"],
-      varients:[
-        {
-          varientId: 2234,
-          varientColor: 'green',
-          varientImage: "./image/vmSocks-green-onWhite.jpg",
-          varientQuantity: 10
-        },
-        {
-          varientId: 2235,
-          varientColor: 'blue',
-          varientImage: "./image/vmSocks-blue-onWhite.jpg",
-          varientQuantity: 0
-        }
 
-      ],
-        cart: 0,
-       onSale: true,
-        num: 1011,
-    },  
+  Vue.component('product', {
+    props: {
+      premium: {
+        type: Boolean,
+        required: true
+      }
+    },
+    template: `
+     <div class="product">
+          
+        <div class="product-image">
+          <img :src="image" />
+        </div>
+  
+        <div class="product-info">
+            <h1>{{ product }}</h1>
+            <p v-if="inStock">In Stock</p>
+            <p v-else>Out of Stock</p>
+            <p>Shipping: {{ shipping }}</p>
+  
+            <ul>
+              <li v-for="detail in details">{{ detail }}</li>
+            </ul>
+  
+            <div class="color-box"
+                 v-for="(variant, index) in variants" 
+                 :key="variant.variantId"
+                 :style="{ backgroundColor: variant.variantColor }"
+                 @mouseover="updateProduct(index)"
+                 >
+            </div> 
+  
+            <button v-on:click="addToCart" 
+              :disabled="!inStock"
+              :class="{ disabledButton: !inStock }"
+              >
+            Add to cart
+            </button>
+  
+            <div class="cart">
+              <p>Cart({{ cart }})</p>
+            </div>
+
+            <br/>
+<!-- table of 1o -->
+<p>Table of different numbers</p>
+<input type="number" v-model="num"/>
+<ul>
+  <li v-for= "a in 10">{{ num }}*{{a}}= {{num*a}}</li>
+</ul>
+  
+         </div>  
+      
+      </div>
+     `,
+    data() {
+      return {
+          product: 'Socks',
+          brand: 'Vue Mastery',
+          selectedVariant: 0,
+          details: ['80% cotton', '20% polyester', 'Gender-neutral'],
+          variants: [
+            {
+              variantId: 2234,
+              variantColor: 'green',
+              variantImage:  'https://www.vuemastery.com/images/challenges/vmSocks-green-onWhite.jpg',
+              variantQuantity: 10     
+            },
+            {
+              variantId: 2235,
+              variantColor: 'blue',
+              variantImage: 'https://www.vuemastery.com/images/challenges/vmSocks-blue-onWhite.jpg',
+              variantQuantity: 0     
+            }
+          ],
+          cart: 0,
+          onSale: true,
+          num: 1011,
+      }
+    },
       methods: {
-        addToCart:function() {
-          this.cart +=1
+        addToCart: function() {
+            this.cart += 1
         },
-      deleteFromCart: function() {
-        this.cart -=1
+        updateProduct: function(index) {  
+            this.selectedVariant = index
+        }
       },
-      updateProduct: function(index) {
-        this.selectedVariant = index
-        console.log(index)
+      computed: {
+          title() {
+              return this.brand + ' ' + this.product  
+          },
+          image(){
+              return this.variants[this.selectedVariant].variantImage
+          },
+          inStock(){
+              return this.variants[this.selectedVariant].variantQuantity
+          },
+          shipping() {
+            if (this.premium) {
+              return "Free"
+            }
+              return 2.99
+          },
+          sale(){
+            if(this.onSale) {
+              return this.brand+ ' ' +this.product+ ' are on Sale'
+            }
+            return this.brand+ ' ' +this.product+ ' are not on Sale'
+          }
       }
-      },
-      computed:{
-        title() {
-          return this.brand + ' ' + this.product
-        },
-    image(){
-      return this.varients[this.selectedVariant].varientImage
-    }, 
-    inStock(){
-      return this.varients[this.selectedVariant].varientQuantity
-    }, 
-    sale(){
-      if(this.onSale) {
-        return this.brand+ ' ' +this.product+ ' are on Sale'
+  })
+  
+  var app = new Vue({
+      el: '#app',
+      data: {
+        premium: true
       }
-      return this.brand+ ' ' +this.product+ ' are not on Sale'
-    }
-
-  }
-    }
-  )
+  })
