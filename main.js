@@ -37,6 +37,11 @@
               >
             Add to cart
             </button>
+            <button @click="removeFromCart" 
+              >
+            Remove from cart
+            </button>
+  
 
             <br/>
 <!-- table of 1o -->
@@ -78,6 +83,9 @@
         addToCart() {
            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
         },
+        removeFromCart(){
+          this.$emit('remove-from-cart',this.variants[this.selectedVariant].variantId)
+        },
         updateProduct: function(index) {  
             this.selectedVariant = index
         }
@@ -102,7 +110,7 @@
             if(this.onSale) {
               return this.brand+ ' ' +this.product+ ' are on Sale'
             }
-            return this.brand+ ' ' +this.product+ ' are not on Sale'
+            return this.brand + ' ' +this.product+ ' are not on Sale'
           }
       }
   })
@@ -111,11 +119,20 @@
       el: '#app',
       data: {
         premium: true,
-        cart: []
+        cart: [],
       },
       methods: {
 updateCart(id) {
   this.cart.push(id)
+},
+removeItem(id) {
+  for(var i = this.cart.length -1; i >=0; i --)
+  {
+    if(this.cart[i] === id) {
+      this.cart.splice(i, 1);
+      return;
+    }
 }
+      }
       }
   })
