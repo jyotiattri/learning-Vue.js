@@ -37,10 +37,6 @@
               >
             Add to cart
             </button>
-  
-            <div class="cart">
-              <p>Cart({{ cart }})</p>
-            </div>
 
             <br/>
 <!-- table of 1o -->
@@ -74,14 +70,13 @@
               variantQuantity: 0     
             }
           ],
-          cart: 0,
           onSale: true,
           num: 1011,
       }
     },
       methods: {
-        addToCart: function() {
-            this.cart += 1
+        addToCart() {
+           this.$emit('add-to-cart')
         },
         updateProduct: function(index) {  
             this.selectedVariant = index
@@ -115,6 +110,12 @@
   var app = new Vue({
       el: '#app',
       data: {
-        premium: true
+        premium: true,
+        cart: 0
+      },
+      methods: {
+updateCart() {
+  this.cart +=1
+}
       }
   })
