@@ -91,3 +91,9 @@ body {
   .outofStock {
     text-decoration: line-through;
   }
+
+  .radio-form input {
+    width: auto;
+    height: auto;
+    margin-bottom: 20px;
+}
